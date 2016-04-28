@@ -37,6 +37,24 @@ The imported data can be accessed with `{{...}}` notation.
 
 Configurations can be overriden per `environment`, `development` is the default.
 
+This files can be placed on the app folder and work fine, but if you want to add a
+directory on the root of the project make sure to include that folder to the ones
+that brunch watch, to do that you can modify you brunch config like this:
+
+```javascript
+exports.config = {
+
+  // More configuration options
+
+  "paths": {
+    "watched": ['app', folder_to_include, 'test', 'vendor']
+  }
+
+  // More configuration options
+
+}
+```
+
 ## Example
 
 `*.conf.json`

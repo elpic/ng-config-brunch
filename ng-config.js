@@ -1,9 +1,9 @@
 "use strict";
 
-var fs = require('fs'),
-    extend = require('util')._extend,
-    path = require('path'),
-    doT = require('dot');
+var fs       = require('fs'),
+    extend   = require('util')._extend,
+    path     = require('path'),
+    doT      = require('dot');
 
 function NgConfigPlugin(config) {
   this.brunchConfig = config || {};
@@ -16,7 +16,7 @@ function NgConfigPlugin(config) {
 
 NgConfigPlugin.prototype.brunchPlugin = true;
 NgConfigPlugin.prototype.type = 'javascript';
-NgConfigPlugin.prototype.extension = 'conf.json';
+NgConfigPlugin.prototype.extension = 'json';
 NgConfigPlugin.prototype.compile = compile;
 NgConfigPlugin.prototype.getFileName = getFileName;
 NgConfigPlugin.prototype.generateModule = generateModule;
@@ -32,11 +32,15 @@ NgConfigPlugin.prototype.loadJSON = loadJSON;
 NgConfigPlugin.prototype.getImportName = getImportName;
 
 function compile(params, callback) {
-  var appConfig = JSON.parse(params.data);
+  var isConfigFile = params.path.indexOf('.config.json') != -1;
 
-  appConfig.overrides = appConfig.overrides || {};
+  if (isConfigFile) {
+    var appConfig = JSON.parse(params.data);
 
-  params.data = this.generateModule(appConfig);
+    appConfig.overrides = appConfig.overrides || {};
+
+    params.data = this.generateModule(appConfig);
+  }
 
   callback(null, params);
 }
